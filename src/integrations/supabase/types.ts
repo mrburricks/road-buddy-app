@@ -14,7 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      mechanic_profiles: {
+        Row: {
+          business_name: string | null
+          created_at: string | null
+          hourly_rate: number | null
+          id: string
+          is_available: boolean | null
+          latitude: number | null
+          license_number: string | null
+          longitude: number | null
+          profile_id: string
+          service_radius_km: number | null
+          specialties: string[] | null
+          updated_at: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          business_name?: string | null
+          created_at?: string | null
+          hourly_rate?: number | null
+          id?: string
+          is_available?: boolean | null
+          latitude?: number | null
+          license_number?: string | null
+          longitude?: number | null
+          profile_id: string
+          service_radius_km?: number | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          business_name?: string | null
+          created_at?: string | null
+          hourly_rate?: number | null
+          id?: string
+          is_available?: boolean | null
+          latitude?: number | null
+          license_number?: string | null
+          longitude?: number | null
+          profile_id?: string
+          service_radius_km?: number | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mechanic_profiles_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      service_requests: {
+        Row: {
+          actual_cost: number | null
+          address: string | null
+          completed_time: string | null
+          created_at: string | null
+          customer_id: string
+          description: string | null
+          estimated_cost: number | null
+          id: string
+          latitude: number
+          longitude: number
+          mechanic_id: string | null
+          scheduled_time: string | null
+          status: Database["public"]["Enums"]["service_status"] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          actual_cost?: number | null
+          address?: string | null
+          completed_time?: string | null
+          created_at?: string | null
+          customer_id: string
+          description?: string | null
+          estimated_cost?: number | null
+          id?: string
+          latitude: number
+          longitude: number
+          mechanic_id?: string | null
+          scheduled_time?: string | null
+          status?: Database["public"]["Enums"]["service_status"] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          actual_cost?: number | null
+          address?: string | null
+          completed_time?: string | null
+          created_at?: string | null
+          customer_id?: string
+          description?: string | null
+          estimated_cost?: number | null
+          id?: string
+          latitude?: number
+          longitude?: number
+          mechanic_id?: string | null
+          scheduled_time?: string | null
+          status?: Database["public"]["Enums"]["service_status"] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_requests_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_requests_mechanic_id_fkey"
+            columns: ["mechanic_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +183,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      service_status:
+        | "pending"
+        | "accepted"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
+      user_role: "customer" | "mechanic"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +316,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      service_status: [
+        "pending",
+        "accepted",
+        "in_progress",
+        "completed",
+        "cancelled",
+      ],
+      user_role: ["customer", "mechanic"],
+    },
   },
 } as const
