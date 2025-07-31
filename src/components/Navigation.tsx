@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Wrench, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { UserNav } from "@/components/UserNav";
 
 interface NavigationProps {
   onGetStarted: () => void;
@@ -8,6 +11,8 @@ interface NavigationProps {
 
 export const Navigation = ({ onGetStarted }: NavigationProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -32,12 +37,18 @@ export const Navigation = ({ onGetStarted }: NavigationProps) => {
             <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
               Pricing
             </a>
-            <Button variant="outline" size="sm">
-              Sign In
-            </Button>
-            <Button variant="default" size="sm" onClick={onGetStarted}>
-              Get Started
-            </Button>
+            {user ? (
+              <UserNav />
+            ) : (
+              <>
+                <Button variant="outline" size="sm" onClick={() => navigate('/auth')}>
+                  Sign In
+                </Button>
+                <Button variant="default" size="sm" onClick={onGetStarted}>
+                  Get Started
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -70,12 +81,18 @@ export const Navigation = ({ onGetStarted }: NavigationProps) => {
                 Pricing
               </a>
               <div className="flex flex-col gap-2 pt-2">
-                <Button variant="outline" size="sm">
-                  Sign In
-                </Button>
-                <Button variant="default" size="sm" onClick={onGetStarted}>
-                  Get Started
-                </Button>
+                {user ? (
+                  <UserNav />
+                ) : (
+                  <>
+                    <Button variant="outline" size="sm" onClick={() => navigate('/auth')}>
+                      Sign In
+                    </Button>
+                    <Button variant="default" size="sm" onClick={onGetStarted}>
+                      Get Started
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>
