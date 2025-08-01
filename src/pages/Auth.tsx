@@ -23,10 +23,10 @@ const Auth = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Redirect authenticated users to the main page
+  // Redirect authenticated users to the dashboard
   useEffect(() => {
     if (user && !authLoading) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [user, authLoading, navigate]);
 
